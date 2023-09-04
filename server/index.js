@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 app.use(cors());
-app.use(express());
+app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mudgl1n.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -22,23 +22,35 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const userCollection = client.db("droidMartDB").collection("users");
+    const usersCollection = client.db("droidMartDB").collection("users");
+    const productsCollection = client.db("droidMartDB").collection("products");
 
     app.post("/user", async (req, res) => {
       const userData = req.body;
       console.log(userData);
       const filter = { email: userData.email };
-      const existingUser = await userCollection.findOne(filter);
+      const existingUser = await usersCollection.findOne(filter);
 
       if (existingUser) {
         return res.send({ message: "User Already Exists" });
       }
-      const result = await userCollection.insertOne(userData);
+      const result = await usersCollection.insertOne(userData);
       res.send(result);
     });
 
     app.get("/users", async (req, res) => {
-      const result = await userCollection.find().toArray();
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/product", async (req, res) => {
+      const userData = req.body;
+      const result = await productsCollection.insertOne(userData);
+      res.send(result);
+    });
+
+    app.get("/products", async (req, res) => {
+      const result = await productsCollection.find().toArray();
       res.send(result);
     });
 

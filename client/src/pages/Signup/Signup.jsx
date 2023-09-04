@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { createUser, logOut, updateUserProfile } = useContext(AuthContext);
+  const { createUser, updateUserProfile, logOut } = useContext(AuthContext);
   const [confirmPasswordError, setConfirmPasswordError] = useState();
   const {
     register,
@@ -40,7 +40,7 @@ const Signup = () => {
             headers: { "content-type": "application/json" },
             body: JSON.stringify(userData),
           })
-            .then((res) => res.json)
+            .then((res) => res.json())
             .then((data) => {
               if (data.insertedId) {
                 const notify = () => toast("Account Created Successfully");

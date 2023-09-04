@@ -26,7 +26,7 @@ const Login = () => {
         reset();
         const notify = () => toast("Loged in Successfully");
         notify();
-        navigate(from, { replace: false });
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         // swal(err.message);

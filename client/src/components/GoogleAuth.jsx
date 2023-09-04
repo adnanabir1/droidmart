@@ -30,14 +30,14 @@ const GoogleAuth = ({ text }) => {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            // if (data.insertedId) {
-            //   const notify = () => {
-            //     toast("Loggedin Successfully");
-            //   };
-            //   notify();
-            //   navigate(from, { replace: true });
-            // }
+            if (data.insertedId) {
+              const notify = () => {
+                toast("Loggedin Successfully");
+              };
+              notify();
+            }
           });
+        navigate(from, { replace: true });
       })
       .catch((err) => {
         // swal(err.message);
