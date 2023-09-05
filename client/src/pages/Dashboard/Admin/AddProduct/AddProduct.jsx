@@ -35,6 +35,7 @@ const AddProduct = () => {
             toast("Product Added Successfully");
           };
           notify();
+          reset();
         }
       });
   };

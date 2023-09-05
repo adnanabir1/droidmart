@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useProduct from "../../../../hooks/useProduct";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const ManageProducts = () => {
   // const [products] = useProduct();
@@ -14,8 +15,27 @@ const ManageProducts = () => {
       });
   }, [products]);
 
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/products/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json)
+      .then((data) => {
+        if (data.deleteCount > 0) {
+          const restProducts = products.filter(
+            (product) => product._id !== product.id
+          );
+          setProducts(restProducts);
+          const notify = () => {
+            toast("Product Deleted Successfully");
+          };
+          notify();
+        }
+      });
+  };
+
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-wrap gap-10 lg:p-40 mx-auto">
       {products.map((product) => (
         <div
           key={product._id}
@@ -50,9 +70,17 @@ const ManageProducts = () => {
               >
                 <FaEdit />
               </Link>
-              <Link className="btn btn-neutral text-xl">
+              <Link
+                onClick={() => handleDelete(`${product._id}`)}
+                className="btn btn-neutral text-xl"
+              >
                 <FaTrash />
               </Link>
+              <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                theme="dark"
+              />
             </div>
           </div>
         </div>
