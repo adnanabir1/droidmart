@@ -27,7 +27,7 @@ const updateProduct = () => {
       pictureUrl: data.pictureUrl,
       ram: parseInt(data.ram),
       rom: parseInt(data.rom),
-      quantity: parseInt(quantity),
+      quantity: parseInt(data.quantity),
       additionalInfo: data.additionalInfo,
     };
 
@@ -115,6 +115,7 @@ const updateProduct = () => {
             </label>
             <input
               {...register("quantity", { required: true })}
+              defaultValue={productInfo.quantity}
               type="number"
               name="quantity"
               placeholder="Available Quantity"

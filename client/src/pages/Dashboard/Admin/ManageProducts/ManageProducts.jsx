@@ -42,7 +42,7 @@ const ManageProducts = () => {
           className="card card-compact w-96 bg-base-100 shadow-xl"
         >
           <figure>
-            <img src={product.pictureUrl} />
+            <img className="max-h-72" src={product.pictureUrl} />
           </figure>
           <div key={product._id} className="card-body">
             <h2 className="card-title">{product.productName}</h2>
@@ -61,6 +61,10 @@ const ManageProducts = () => {
             <p className="text-xl">
               <span className="font-semibold">Processor: </span>
               {product.processor}
+            </p>
+            <p className="text-xl">
+              <span className="font-semibold">Available Quantity: </span>
+              {product.quantity}
             </p>
 
             <div className="card-actions justify-end">
