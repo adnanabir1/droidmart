@@ -71,6 +71,7 @@ async function run() {
           price: updateProductInfo.price,
           ram: updateProductInfo.ram,
           rom: updateProductInfo.rom,
+          quantity: updateProductInfo.quantity,
           additionalInfo: updateProductInfo.additionalInfo,
         },
       };

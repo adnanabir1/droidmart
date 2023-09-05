@@ -23,10 +23,11 @@ const updateProduct = () => {
 
   const onSubmit = (data) => {
     const updateProductData = {
-      price: data.price,
+      price: parseFloat(data.price),
       pictureUrl: data.pictureUrl,
-      ram: data.ram,
-      rom: data.rom,
+      ram: parseInt(data.ram),
+      rom: parseInt(data.rom),
+      quantity: parseInt(quantity),
       additionalInfo: data.additionalInfo,
     };
 
@@ -107,6 +108,23 @@ const updateProduct = () => {
               />
             </div>
           </div>
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Available Quantity</span>
+            </label>
+            <input
+              {...register("quantity", { required: true })}
+              type="number"
+              name="quantity"
+              placeholder="Available Quantity"
+              className="input input-bordered"
+            />
+            {errors.processor && (
+              <span className="text-red-500">Quantity is required</span>
+            )}
+          </div>
+
           <div className="form-control mt-6">
             <label className="label">
               <span className="label-text">Any Additional Info?</span>

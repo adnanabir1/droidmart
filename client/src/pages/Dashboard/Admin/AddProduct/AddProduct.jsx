@@ -20,6 +20,7 @@ const AddProduct = () => {
       rom: parseInt(data.rom),
       battery: parseInt(data.battery),
       processor: data.processor,
+      quantity: parseInt(data.quantity),
       additionalInfo: data.additionalInfo,
     };
 
@@ -131,7 +132,7 @@ const AddProduct = () => {
                 {...register("battery", { required: true })}
                 type="text"
                 name="battery"
-                placeholder="Available Quantity"
+                placeholder="Battery"
                 className="input input-bordered flex-grow-1"
               />
               {errors.battery && (
@@ -151,6 +152,22 @@ const AddProduct = () => {
               />
               {errors.processor && (
                 <span className="text-red-500">Processor is required</span>
+              )}
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Available Quantity</span>
+              </label>
+              <input
+                {...register("quantity", { required: true })}
+                type="number"
+                name="quantity"
+                placeholder="Available Quantity"
+                className="input input-bordered"
+              />
+              {errors.processor && (
+                <span className="text-red-500">Quantity is required</span>
               )}
             </div>
           </div>
