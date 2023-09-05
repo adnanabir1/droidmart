@@ -14,11 +14,12 @@ const AddProduct = () => {
     // console.log(data);
     const productData = {
       productName: data.productName,
-      price: data.price,
+      price: parseFloat(data.price),
       pictureUrl: data.pictureUrl,
-      ram: data.ram,
-      rom: data.rom,
-      battery: data.battery,
+      ram: parseInt(data.ram),
+      rom: parseInt(data.rom),
+      battery: parseInt(data.battery),
+      processor: data.processor,
       additionalInfo: data.additionalInfo,
     };
 
