@@ -12,6 +12,7 @@ import AddProduct from "../pages/Dashboard/Admin/AddProduct/AddProduct";
 import UpdateProduct from "../pages/Dashboard/Admin/UpdateProduct/UpdateProduct";
 import ManageProducts from "../pages/Dashboard/Admin/ManageProducts/ManageProducts";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers/ManageUsers";
+import ProductDetails from "../pages/ProductDetails/ProductDetails";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/shop/product-details/:id",
+        element: <ProductDetails />,
       },
       {
         path: "/shop",

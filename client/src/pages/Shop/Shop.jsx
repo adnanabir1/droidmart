@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useProduct from "../../hooks/useProduct";
 import { AiOutlineHeart } from "react-icons/ai";
 import { MdOutlineExpandMore } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [products] = useProduct();
@@ -31,7 +32,12 @@ const Shop = () => {
               </p>
 
               <div className="card-actions justify-end">
-                <button className="btn btn-primary">Buy Now</button>
+                <Link
+                  to={`/product-details/${product._id}`}
+                  className="btn btn-neutral"
+                >
+                  Buy Now
+                </Link>
               </div>
             </div>
           </div>
