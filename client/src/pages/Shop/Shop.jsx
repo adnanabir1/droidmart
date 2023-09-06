@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import useProduct from "../../hooks/useProduct";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiTwotoneHeart } from "react-icons/ai";
+import { BsFillHeartFill } from "react-icons/bs";
 import { MdOutlineExpandMore } from "react-icons/md";
+
 import { Link } from "react-router-dom";
 
 const Shop = () => {
@@ -10,13 +12,16 @@ const Shop = () => {
   const loadMore = () => {
     setNoOfElements(noOfElements + noOfElements);
   };
-  const slice = products.slice(0, noOfElements);
+  const renderedProducts = products.slice(0, noOfElements);
   return (
-    <>
-      <div className="flex flex-wrap w-2/3 mx-auto gap-16 my-5">
-        {slice.map((product) => (
-          <div className="card w-96 bg-base-100 shadow-xl relative">
-            <AiOutlineHeart className="absolute top-0 right-1 text-2xl" />
+    <div className="max-w-screen-2xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3  gap-5 my-5">
+        {renderedProducts.map((product) => (
+          <div
+            key={product._id}
+            className="card w-11/12 mx-auto bg-base-100 shadow-xl relative"
+          >
+            <BsFillHeartFill className="absolute top-0 right-1 text-2xl text-yellow-500" />
             <figure>
               <img className="max-h-72 p-2" src={product.pictureUrl} />
             </figure>
@@ -43,10 +48,12 @@ const Shop = () => {
           </div>
         ))}
       </div>
-      <button onClick={loadMore} className="btn btn-neutral w-32 mx-auto">
-        <MdOutlineExpandMore className="text-3xl" />
-      </button>
-    </>
+      <div className="  flex justify-center my-12">
+        <button onClick={loadMore} className="btn btn-neutral text-center w-40">
+          <MdOutlineExpandMore className="text-3xl" />
+        </button>
+      </div>
+    </div>
   );
 };
 

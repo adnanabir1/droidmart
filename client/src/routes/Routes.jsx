@@ -30,13 +30,14 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
-      {
-        path: "/shop/product-details/:id",
-        element: <ProductDetails />,
-      },
+
       {
         path: "/shop",
         element: <Shop />,
+      },
+      {
+        path: "/product-details/:id",
+        element: <ProductDetails />,
       },
       {
         path: "/mycart",
