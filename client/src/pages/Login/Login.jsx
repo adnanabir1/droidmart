@@ -93,7 +93,7 @@ const Login = () => {
                 <input
                   type="submit"
                   value={"Login"}
-                  className="btn btn-primary"
+                  className="btn btn-neutral"
                 />
                 <ToastContainer
                   position="top-center"

@@ -1,16 +1,17 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../providers/AuthProvider";
-import swal from "sweetalert";
 import GoogleAuth from "../../components/GoogleAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+const img_hosting_token = import.meta.env.VITE_IMG_HOSTING_TOKEN;
 
 const Signup = () => {
   const navigate = useNavigate();
   const { createUser, updateUserProfile, logOut } = useContext(AuthContext);
   const [confirmPasswordError, setConfirmPasswordError] = useState();
+  const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
   const {
     register,
     handleSubmit,
@@ -19,38 +20,51 @@ const Signup = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     if (data.password === data.confirmPassword) {
       setConfirmPasswordError(false);
     } else {
       setConfirmPasswordError(true);
     }
-    createUser(data.email, data.password)
-      .then((result) => {
-        // swal("User Created Successfully");
-        updateUserProfile(data.name, data.photo).then(() => {
-          const userData = {
-            name: data.name,
-            email: data.email,
-            image: data.photo,
-            role: "user",
-          };
-          fetch("http://localhost:5000/user", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify(userData),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.insertedId) {
-                const notify = () => toast("Account Created Successfully");
-                notify();
-                reset();
-                logOut();
-                navigate("/login");
-              }
+
+    const formData = new FormData();
+    formData.append("image", data.image[0]);
+    let imgURL;
+
+    fetch(img_hosting_url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imgRes) => {
+        if (imgRes.success) {
+          imgURL = imgRes.data.url;
+          createUser(data.email, data.password).then((result) => {
+            updateUserProfile(data.name, imgURL).then(() => {
+              // Sending data to DB
+              const userData = {
+                name: data.name,
+                email: data.email,
+                image: imgURL,
+                role: "user",
+              };
+              fetch("http://localhost:5000/user", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify(userData),
+              })
+                .then((res) => res.json())
+                .then((data) => {
+                  if (data.insertedId) {
+                    const notify = () => toast("Account Created Successfully");
+                    notify();
+                    reset();
+                    logOut();
+                    navigate("/login");
+                  }
+                });
             });
-        });
+          });
+        }
       })
       .catch((err) => {
         // swal(err.message);
@@ -130,19 +144,18 @@ const Signup = () => {
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Photo URL</span>
+                  <span className="label-text">Photo</span>
                 </label>
                 <input
-                  type="text"
-                  {...register("photo", {
+                  type="file"
+                  {...register("image", {
                     required: true,
                   })}
-                  placeholder="Photo Url"
-                  className="input input-bordered"
+                  className="file-input file-input-bordered"
                 />
               </div>
               {errors.photo && (
-                <span className="text-red-500">Photo URL Required</span>
+                <span className="text-red-500">Photo is Required</span>
               )}
 
               <label className="label">
@@ -157,7 +170,7 @@ const Signup = () => {
                 <input
                   type="submit"
                   value={"Signup"}
-                  className="btn btn-primary"
+                  className="btn btn-neutral"
                 />
                 <ToastContainer
                   position="top-center"
