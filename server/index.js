@@ -2,11 +2,33 @@ const express = require("express");
 require("dotenv").config();
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 app.use(cors());
 app.use(express.json());
+
+const verifyJWT = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  if (!authorization) {
+    return res
+      .status(401)
+      .send({ error: true, message: "unauthorized access" });
+  }
+  const token = authorization.split(" ")[1];
+
+  // JWT Verify
+  jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, decoded) => {
+    if (err) {
+      return res
+        .status(401)
+        .send({ error: true, message: "unauthorized access" });
+    }
+    req.decoded = decoded;
+    next();
+  });
+};
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mudgl1n.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -24,6 +46,52 @@ async function run() {
     await client.connect();
     const usersCollection = client.db("droidMartDB").collection("users");
     const productsCollection = client.db("droidMartDB").collection("products");
+    const upcomingProductsCollection = client
+      .db("droidMartDB")
+      .collection("upcomingProducts");
+
+    // JWT VERIFIED
+    app.post("/jwt", (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, {
+        expiresIn: "1hr",
+      });
+      res.send(token);
+    });
+
+    const verifyAdmin = async (req, res, next) => {
+      const email = req.decoded.email;
+      const filter = { email: email };
+      const user = await usersCollection.findOne(filter);
+      if (user?.role !== "admin") {
+        return res
+          .status(403)
+          .send({ error: true, message: "forbiden access" });
+      }
+      next();
+    };
+
+    app.get("/users/user/:email", async (req, res) => {
+      const email = req.params.email;
+      if (req.decoded.email !== email) {
+        res.send({ user: false });
+      }
+      const filter = { email: email };
+      const user = await usersCollection.findOne(filter);
+      const result = { user: user?.role === "user" };
+      res.send(result);
+    });
+
+    app.get("/users/admin/:email", async (req, res) => {
+      const email = req.params.email;
+      if (req.decoded.email !== email) {
+        res.send({ admin: false });
+      }
+      const filter = { email: email };
+      const user = await usersCollection.findOne(filter);
+      const result = { user: user?.role === "admin" };
+      res.send(result);
+    });
 
     app.post("/user", async (req, res) => {
       const userData = req.body;
@@ -38,7 +106,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/users", async (req, res) => {
+    app.get("/users", verifyJWT, async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
@@ -46,6 +114,17 @@ async function run() {
     app.post("/product", async (req, res) => {
       const userData = req.body;
       const result = await productsCollection.insertOne(userData);
+      res.send(result);
+    });
+
+    app.post("/upcoming-product", async (req, res) => {
+      const productData = req.body;
+      const result = await upcomingProductsCollection.insertOne(productData);
+      res.send(result);
+    });
+
+    app.get("/upcoming-products", async (req, res) => {
+      const result = await upcomingProductsCollection.find().toArray();
       res.send(result);
     });
 
@@ -107,6 +186,14 @@ async function run() {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const result = await productsCollection.deleteOne(filter);
+      res.send(result);
+    });
+
+    app.delete("/upcoming-products/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const filter = { _id: new ObjectId(id) };
+      const result = await upcomingProductsCollection.deleteOne(filter);
       res.send(result);
     });
 

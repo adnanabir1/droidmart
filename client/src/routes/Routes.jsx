@@ -13,6 +13,8 @@ import UpdateProduct from "../pages/Dashboard/Admin/UpdateProduct/UpdateProduct"
 import ManageProducts from "../pages/Dashboard/Admin/ManageProducts/ManageProducts";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers/ManageUsers";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
+import AddUpcomingProduct from "../pages/Dashboard/Admin/AddUpcomingProduct/AddUpcomingProduct";
+import ManageUpcomingProducts from "../pages/Dashboard/Admin/ManageUpcomingProducts/ManageUpcomingProducts";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: "manage-products/update/product/:id",
         element: <UpdateProduct />,
+      },
+      {
+        path: "add-upcoming-product",
+        element: <AddUpcomingProduct />,
+      },
+      {
+        path: "manage-upcoming-products",
+        element: <ManageUpcomingProducts />,
       },
       {
         path: "manage-users",

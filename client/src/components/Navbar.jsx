@@ -1,22 +1,37 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../providers/AuthProvider";
+import useAuth from "../hooks/useAuth";
+import { FaHome, FaShoppingCart } from "react-icons/fa";
+import { LiaStoreAltSolid } from "react-icons/lia";
+import { BiSolidDashboard } from "react-icons/bi";
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut } = useAuth();
   const navItems = (
     <>
       <li>
-        <Link to={"/"}>Home</Link>
+        <Link to={"/"}>
+          <FaHome />
+          Home
+        </Link>
       </li>
       <li>
-        <Link to={"/Shop"}>Shop</Link>
+        <Link to={"/Shop"}>
+          <LiaStoreAltSolid />
+          Shop
+        </Link>
       </li>
       <li>
-        <Link to={"/mycart"}>My Cart</Link>
+        <Link to={"/mycart"}>
+          <FaShoppingCart />
+          My Cart
+        </Link>
       </li>
       <li>
-        <Link to={"/dashboard"}>Dashboard</Link>
+        <Link to={"/dashboard"}>
+          <BiSolidDashboard />
+          Dashboard
+        </Link>
       </li>
     </>
   );

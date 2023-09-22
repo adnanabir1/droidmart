@@ -1,24 +1,56 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import { BiMenu } from "react-icons/bi";
+import { MdPlaylistAdd } from "react-icons/md";
+import { BsTools } from "react-icons/bs";
+import { LiaUserCogSolid } from "react-icons/lia";
+import { BiSolidDashboard } from "react-icons/bi";
+import { FaHome } from "react-icons/fa";
 
 const Dashboard = () => {
   const dashboardItems = (
     <>
       <li>
-        <Link to={"/"}>Home</Link>
+        <Link to={"/"}>
+          <FaHome />
+          Home
+        </Link>
       </li>
       <li>
-        <Link to={"/dashboard"}>Dashboard</Link>
+        <Link to={"/dashboard"}>
+          <BiSolidDashboard />
+          Dashboard
+        </Link>
       </li>
       <li>
-        <Link to={"add-product"}>Add Product</Link>
+        <Link to={"add-product"}>
+          <MdPlaylistAdd className="text-2xl" />
+          Add Product
+        </Link>
       </li>
       <li>
-        <Link to={"manage-products"}>Manage Products</Link>
+        <Link to={"manage-products"}>
+          <BsTools />
+          Manage Products
+        </Link>
       </li>
       <li>
-        <Link to={"manage-users"}>Manage Users</Link>
+        <Link to={"manage-users"}>
+          <LiaUserCogSolid className="text-xl" />
+          Manage Users
+        </Link>
+      </li>
+      <li>
+        <Link to={"add-upcoming-product"}>
+          <MdPlaylistAdd className="text-2xl" />
+          Add Upcoming Product
+        </Link>
+      </li>
+      <li>
+        <Link to={"manage-upcoming-products"}>
+          <BsTools />
+          Manage Upcoming Product
+        </Link>
       </li>
     </>
   );

@@ -39,7 +39,7 @@ const Shop = () => {
               <div className="card-actions justify-end">
                 <Link
                   to={`/product-details/${product._id}`}
-                  className="btn btn-neutral"
+                  className="btn btn-neutral "
                 >
                   Buy Now
                 </Link>
